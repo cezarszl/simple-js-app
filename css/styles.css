@@ -1,4 +1,21 @@
-p {
-    font-size: 40px;
+table {
+    border-collapse: collapse;
+}
+
+caption {
+    font-size: 26px;
     font-weight: bold;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+thead th {
+    width: 30%;
+}
+
+p {
+    font-size: 30px; 
 }
