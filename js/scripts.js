@@ -8,14 +8,14 @@ let pokemonList = [
 // Setting up a table
 document.write("<table><caption>My Pokémons</caption><thead><tr><th>Name</th><th>Type</th><th>Height(m)</th></tr></thead><tbody>");
 // Adding rows to the table 
-for (let i = 0; i < pokemonList.length; i++) {
-  // Checking if and item of the object is an array, if yes printing items with " " instead of a comma
-  if (Array.isArray(pokemonList[i].type)) {
-    document.write("<tr><td>" + pokemonList[i].name + "</td><td>" + pokemonList[i].type.join(" ") + "</td><td>" + pokemonList[i].height + "</td></tr>");
+pokemonList.forEach(function (pokemon) {
+  if (Array.isArray(pokemon.type)) {
+    document.write("<tr><td>" + pokemon.name + "</td><td>" + pokemon.type.join(" ") + "</td><td>" + pokemon.height + "</td></tr>");
   } else {
-    document.write("<tr><td>" + pokemonList[i].name + "</td><td>" + pokemonList[i].type + "</td><td>" + pokemonList[i].height + "</td></tr>");
+    document.write("<tr><td>" + pokemon.name + "</td><td>" + pokemon.type + "</td><td>" + pokemon.height + "</td></tr>");
   }
-}
+});
+
 //Closing table tags
 document.write("</tbody>></table>");
 
