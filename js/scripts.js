@@ -29,43 +29,40 @@ let pokemonRepository = (function () {
     function getAll () {
       return pokemonList;
     }
+    // Function adding Pokemons to the list
+    function addListItem (pokemon) {
+      let pokemonList = document.querySelector(".pokemon-list");
+      let listpokemon = document.createElement("li");
+      let button = document.createElement("button");
+      button.innerText = pokemon.name;
+      button.classList.add("button-class");
+      addButtonListener(button, pokemon); //Calling function to add click event to button
+      listpokemon.appendChild(button);
+      pokemonList.appendChild(listpokemon);
+    }
+    // Function show the name of clicked Pokemon
+    function showDetails(pokemon) {
+      console.log('Clicked Pokemon\'s name: ' + pokemon.name);
+    }
+    // Function adding click event to a button
+    function addButtonListener (button, pokemon){
+      button.addEventListener('click', function () { showDetails(pokemon)}); 
+    }
 
     return {
       add: add,
       getByName: getByName,
-      getAll: getAll
+      getAll: getAll,
+      addListItem: addListItem,
+      showDetails: showDetails,
+      addButtonListener: addButtonListener
     };
 })();
 
 // Adding a pokemon 
 pokemonRepository.add({ name: 'Hypno', type: 'PSYCHIC', height: 1.6});
-// pokemonRepository.add("string");
-// pokemonRepository.add({name: 'Hypno', size: 0});
-
-// Printing info by name (an array)
-console.log(pokemonRepository.getByName("Bulbasaur"));
-
-// Setting up a table
-document.write("<table><caption>My Pokémons</caption><thead><tr><th>Name</th><th>Type</th><th>Height(m)</th></tr></thead><tbody>");
 
 // Adding rows to the table 
 pokemonRepository.getAll().forEach(function (pokemon) {
-  if (Array.isArray(pokemon.type)) {
-    document.write("<tr><td>" + pokemon.name + "</td><td>" + pokemon.type.join(" ") + "</td><td>" + pokemon.height + "</td></tr>");
-  } else {
-    document.write("<tr><td>" + pokemon.name + "</td><td>" + pokemon.type + "</td><td>" + pokemon.height + "</td></tr>");
-  }
+  pokemonRepository.addListItem(pokemon);
 });
-
-//Closing table tags
-document.write("</tbody></table>");
-
-// A do while loop checking checking which pokemon is higher than 1m and printing it
-let i = 0;
-do {
-    i++;
-    if(pokemonRepository.getAll()[i]?.height > 1) {
-        document.write("<p>Wow " + pokemonRepository.getAll()[i].name + " is big!</p>");
-    }
-}
-while(i < pokemonRepository.getAll().length);
