@@ -1,24 +1,15 @@
 // Declaring an object 
 let pokemonRepository = (function () {
-  let pokemonList = [
-    { name: 'Bulbasaur', type: ['GRASS', 'POISON'], height: 0.7 },
-    { name: 'Caterpie', type: 'BUG', height: 0.3 },
-    { name: 'Nidoqueen', type: ['GROUND', 'POISON'], height: 1.3 }
-  ];
+  let pokemonList = [];
+  let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
 
   function add(pokemon) {
-    // Checking if modification is an object
-    if (typeof pokemon === "object") {
-      // Checking if the keys are the same 
-      if (Object.keys(pokemon).toString() === Object.keys(pokemonList[0]).toString()) {
+    // Checking if modification is an object and if the key is the same
+   if (typeof pokemon === "object" && "name" in pokemon) {  
         pokemonList.push(pokemon);
-      }
-      else {
-        alert("Object must have following keys: name, type, height");
-      }
-    }
-    else {
-      alert("Added pokemon must be an object");
+       }
+   else {
+       alert("Added pokemon must be a correct object");
     }
   }
   // Function to find Pokemons info only by name
@@ -26,6 +17,7 @@ let pokemonRepository = (function () {
     let pokemon = pokemonList.filter(pokemon => pokemon.name === pokemonName);
     return pokemon;
   }
+  // Function getting all Pokemons
   function getAll() {
     return pokemonList;
   }
@@ -42,27 +34,60 @@ let pokemonRepository = (function () {
   }
   // Function show the name of clicked Pokemon
   function showDetails(pokemon) {
-    console.log('Clicked Pokemon\'s name: ' + pokemon.name);
+    loadDetails(pokemon).then(function () {
+      console.log(pokemon);
+    });
   }
   // Function adding click event to a button
   function addButtonListener(button, pokemon) {
     button.addEventListener('click', function () { showDetails(pokemon) });
   }
-
+  // Function fetching all Pokemons
+  function loadList() {
+    return fetch(apiUrl).then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      json.results.forEach(function (item) {
+        let pokemon = {
+          name: item.name,
+          detailsUrl: item.url
+        };
+        add(pokemon);
+      });
+    }).catch(function (e) {
+      console.error(e);
+    })
+  }
+  // Function fetching specific Pokemon's details
+  function loadDetails(item) {
+    let url = item.detailsUrl;
+    return fetch(url).then(function (response) {
+      return response.json();
+    }).then(function (details) {
+      // Now we add the details to the item
+      item.imageUrl = details.sprites.front_default;
+      item.height = details.height;
+      item.types = details.types;
+    }).catch(function (e) {
+      console.error(e);
+    });
+  }
   return {
     add: add,
     getByName: getByName,
     getAll: getAll,
     addListItem: addListItem,
     showDetails: showDetails,
-    addButtonListener: addButtonListener
+    addButtonListener: addButtonListener,
+    loadList: loadList,
+    loadDetails: loadDetails
   };
 })();
 
-// Adding a pokemon 
-pokemonRepository.add({ name: 'Hypno', type: 'PSYCHIC', height: 1.6 });
-
-// Adding rows to the table 
-pokemonRepository.getAll().forEach(function (pokemon) {
-  pokemonRepository.addListItem(pokemon);
+// // Loading list of pokemons 
+pokemonRepository.loadList().then(function () {
+  // Now the data is loaded!
+  pokemonRepository.getAll().forEach(function (pokemon) {
+    pokemonRepository.addListItem(pokemon);
+  });
 });
