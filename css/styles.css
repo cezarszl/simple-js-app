@@ -60,3 +60,11 @@ li button:hover {
     background: #f6f6f6;
     height: 50px;
 }
+
+#loading-msg
+{
+    font-size: 18px;
+    text-align: center;
+    text-transform: uppercase;
+    margin: 0 0 20px;
+}

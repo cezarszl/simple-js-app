@@ -32,6 +32,16 @@ let pokemonRepository = (function () {
     listpokemon.appendChild(button);
     pokemonList.appendChild(listpokemon);
   }
+  // Function showing loading message
+  function showLoadingMessage () {
+    let msg = document.querySelector("#loading-msg");
+    msg.innerText = "The items are being loaded";
+  }
+  // Function hiding loading message
+  function hideLoadingMessage () {
+    let msg = document.querySelector("#loading-msg");
+    msg.innerText = "";
+  }
   // Function show the name of clicked Pokemon
   function showDetails(pokemon) {
     loadDetails(pokemon).then(function () {
@@ -44,9 +54,11 @@ let pokemonRepository = (function () {
   }
   // Function fetching all Pokemons
   function loadList() {
+    showLoadingMessage(); // Executing function showing loading msg 
     return fetch(apiUrl).then(function (response) {
       return response.json();
     }).then(function (json) {
+      hideLoadingMessage(); // Executing function hiding loading msg because the response has been received
       json.results.forEach(function (item) {
         let pokemon = {
           name: item.name,
@@ -55,20 +67,24 @@ let pokemonRepository = (function () {
         add(pokemon);
       });
     }).catch(function (e) {
+      hideLoadingMessage(); // Executing function hiding loading msg because the response has been received
       console.error(e);
     })
   }
   // Function fetching specific Pokemon's details
   function loadDetails(item) {
+    showLoadingMessage(); // Executing function showing loading msg 
     let url = item.detailsUrl;
     return fetch(url).then(function (response) {
       return response.json();
     }).then(function (details) {
+      hideLoadingMessage(); // Executing function hiding loading msg because the response has been received
       // Now we add the details to the item
       item.imageUrl = details.sprites.front_default;
       item.height = details.height;
       item.types = details.types;
     }).catch(function (e) {
+      hideLoadingMessage(); // Executing function hiding loading msg because the response has been received
       console.error(e);
     });
   }
@@ -80,7 +96,9 @@ let pokemonRepository = (function () {
     showDetails: showDetails,
     addButtonListener: addButtonListener,
     loadList: loadList,
-    loadDetails: loadDetails
+    loadDetails: loadDetails,
+    showLoadingMessage: showLoadingMessage,
+    hideLoadingMessage: hideLoadingMessage
   };
 })();
 
