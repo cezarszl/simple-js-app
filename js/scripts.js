@@ -1,7 +1,7 @@
 // Declaring a IIFE
 let pokemonRepository = (function () {
   let pokemonList = [];
-  let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
+  let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=1000';
   let input = document.querySelector('#search');
 
   function add(pokemon) {
@@ -38,14 +38,22 @@ let pokemonRepository = (function () {
 
   // Function showing loading message
   function showLoadingMessage() {
-    let msg = document.querySelector("#loading-msg");
-    msg.innerText = "The items are being loaded";
+    let loadingScreen = document.querySelector(".loading-screen");
+    let loader = document.querySelector("#loader");
+    loadingScreen.classList.add("display");
+    loader.classList.add("display");
+    setTimeout(() => {
+      loader.classList.remove("display");
+    }, 5000000);
   }
+
 
   // Function hiding loading message
   function hideLoadingMessage() {
-    let msg = document.querySelector("#loading-msg");
-    msg.innerText = "";
+    let loadingScreen = document.querySelector(".loading-screen");
+    let loader = document.querySelector("#loader");
+    loadingScreen.classList.remove("display");
+    loader.classList.remove("display")
   }
 
   //  Function creating a modal
@@ -79,47 +87,52 @@ let pokemonRepository = (function () {
     button.addEventListener('click', function () { showDetails(pokemon) });
   }
 
+  function wait(ms, value) {
+    return new Promise(resolve => setTimeout(resolve, ms, value));
+  }
+
   // Function fetching all Pokemons
   function loadList() {
     showLoadingMessage(); // Executing function showing loading msg 
-    return fetch(apiUrl).then(function (response) {
-      return response.json();
-    }).then(function (json) {
-      hideLoadingMessage(); // Executing function hiding loading msg because the response has been received
-      json.results.forEach(function (item) {
-        let pokemon = {
-          name: item.name,
-          detailsUrl: item.url
-        };
-        add(pokemon);
-      });
-    }).catch(function (e) {
-      hideLoadingMessage(); // Executing function hiding loading msg because the response has been received
-      console.error(e);
-    })
+    return fetch(apiUrl)
+      .then(value => wait(2000, value))
+      .then(response => {
+        return response.json();
+      })
+      .then(json => {
+        hideLoadingMessage(); // Executing function hiding loading msg because the response has been received
+        json.results.forEach(function (item) {
+          let pokemon = {
+            name: item.name,
+            detailsUrl: item.url
+          };
+          add(pokemon);
+        });
+      })
+      .catch(function (e) {
+        hideLoadingMessage(); // Executing function hiding loading msg because the response has been received
+        console.error(e);
+      })
   }
 
   // Function fetching specific Pokemon's details
   function loadDetails(item) {
-    showLoadingMessage(); // Executing function showing loading msg 
     let url = item.detailsUrl;
     return fetch(url).then(function (response) {
       return response.json();
     }).then(function (details) {
-      hideLoadingMessage(); // Executing function hiding loading msg because the response has been received
       // Now we add the details to the item
       item.imageUrl = details.sprites.front_default;
       item.height = details.height;
       item.types = details.types;
     }).catch(function (e) {
-      hideLoadingMessage(); // Executing function hiding loading msg because the response has been received
       console.error(e);
     });
   }
-  
+
   // Function searching through list items
   function search() {
-  
+
     let filter, li, i, txtValue, buttonPokemon;
     filter = input.value.toUpperCase();
     li = document.getElementsByClassName('list-group-item');
@@ -153,13 +166,11 @@ let pokemonRepository = (function () {
 
 })();
 
-// console.log(answer);
+
 // // Loading list of pokemons 
 pokemonRepository.loadList().then(function () {
   // Now the data is loaded!
   pokemonRepository.getAll().forEach(function (pokemon) {
     pokemonRepository.addListItem(pokemon);
   });
-
-  
 });

@@ -1,7 +1,55 @@
-#loading-msg {
-    font-size: 18px;
-    text-transform: uppercase;
-    margin: 0;
+/* body {
+    background-color: gray;
+} */
+.container {
+    margin-top: 100px;
+}
+
+.container li {
+    background:none;
+}
+
+.loading-screen {
+    display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 9998;
+}
+
+.loading-screen.display {
+    display:block;
+	
+}
+
+#loader {
+    width: 2rem;
+    height: 2rem;
+    top: 50%;
+    left: 50%;
+    border: 5px solid #f3f3f3;
+    border-top: 6px solid #9c41f2;
+    border-radius: 100%;
+    margin: auto;
+    visibility: hidden;
+    animation: spin 1s infinite linear;
+    position: fixed;
+    text-align: center;
+    z-index: 9999;
+}
+#loader.display {
+    visibility: visible;
+}
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .pokemon-item {
