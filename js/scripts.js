@@ -1,7 +1,7 @@
 // Declaring a IIFE
 let pokemonRepository = (function () {
   let pokemonList = [];
-  let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
+  let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=20';
   let modalContainer = document.querySelector('#modal-container');
 
   function add(pokemon) {
@@ -27,11 +27,12 @@ let pokemonRepository = (function () {
 
   // Function adding Pokemons to the list
   function addListItem(pokemon) {
-    let pokemonList = document.querySelector(".pokemon-list");
+    let pokemonList = document.querySelector(".list-group");
     let listpokemon = document.createElement("li");
     let button = document.createElement("button");
+    listpokemon.classList.add ("list-group-item", "list-group-item-action");
     button.innerText = pokemon.name;
-    button.classList.add("button-class");
+    button.classList.add("btn", "btn-success", "btn-block");
     addButtonListener(button, pokemon); //Calling function to add click event to button
     listpokemon.appendChild(button);
     pokemonList.appendChild(listpokemon);
@@ -166,6 +167,13 @@ let pokemonRepository = (function () {
   
 })();
 
+let scrollContainer = document.querySelector(".list-group");
+scrollContainer.addEventListener("wheel" ,(e) => {
+  // e.preventDefault();
+  let delta = Math.sign(e.deltaY);
+  console.log(delta);
+  scrollContainer.scrollTop += e.deltaX;
+});
 // // Loading list of pokemons 
 pokemonRepository.loadList().then(function () {
   // Now the data is loaded!
