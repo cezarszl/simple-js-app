@@ -2,7 +2,7 @@
 let pokemonRepository = (function () {
   let pokemonList = [];
   let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
-  let modalContainer = document.querySelector('#modal-container');
+  let input = document.querySelector('#search');
 
   function add(pokemon) {
     // Checking if modification is an object and if the key is the same
@@ -21,7 +21,7 @@ let pokemonRepository = (function () {
 
   // Function adding Pokemons to the list
   function addListItem(pokemon) {
-    let pokemonList = document.querySelector(".row");
+    let listcontainer = document.querySelector(".row");
 
     let listpokemon = document.createElement("li");
     listpokemon.classList.add("list-group-item", "list-group-item-action", "col-md-4", "col-sm-4", "pokemon-item");
@@ -32,7 +32,7 @@ let pokemonRepository = (function () {
     button.setAttribute("data-target", "#modal");
     button.innerText = pokemon.name;
     listpokemon.appendChild(button);
-    pokemonList.appendChild(listpokemon);
+    listcontainer.appendChild(listpokemon);
     addButtonListener(button, pokemon); //Calling function to add click event to button
   }
 
@@ -116,6 +116,26 @@ let pokemonRepository = (function () {
       console.error(e);
     });
   }
+  
+  // Function searching through list items
+  function search() {
+  
+    let filter, li, i, txtValue, buttonPokemon;
+    filter = input.value.toUpperCase();
+    li = document.getElementsByClassName('list-group-item');
+    for (i = 0; i < li.length; i++) {
+      buttonPokemon = li[i].getElementsByClassName('btn')[0];
+      txtValue = buttonPokemon.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        li[i].style.display = '';
+      } else {
+        li[i].style.display = 'none';
+      }
+    }
+  }
+
+  // Method adding an event when typing in search field
+  input.addEventListener('keyup', search);
 
   return {
     add: add,
@@ -127,15 +147,19 @@ let pokemonRepository = (function () {
     loadList: loadList,
     loadDetails: loadDetails,
     showLoadingMessage: showLoadingMessage,
-    hideLoadingMessage: hideLoadingMessage
+    hideLoadingMessage: hideLoadingMessage,
+    search: search
   };
 
 })();
 
+// console.log(answer);
 // // Loading list of pokemons 
 pokemonRepository.loadList().then(function () {
   // Now the data is loaded!
   pokemonRepository.getAll().forEach(function (pokemon) {
     pokemonRepository.addListItem(pokemon);
   });
+
+  
 });
