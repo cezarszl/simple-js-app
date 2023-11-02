@@ -6,11 +6,10 @@ let pokemonRepository = (function () {
 
   function add(pokemon) {
     // Checking if modification is an object and if the key is the same
-    if (typeof pokemon === "object" && "name" in pokemon) {
+    if (typeof pokemon === 'object' && 'name' in pokemon) {
       pokemonList.push(pokemon);
-    }
-    else {
-      alert("Added pokemon must be a correct object");
+    } else {
+      alert('Added pokemon must be a correct object');
     }
   }
 
@@ -21,15 +20,21 @@ let pokemonRepository = (function () {
 
   // Function adding Pokemons to the list
   function addListItem(pokemon) {
-    let listcontainer = document.querySelector(".row");
+    let listcontainer = document.querySelector('.row');
 
-    let listpokemon = document.createElement("li");
-    listpokemon.classList.add("list-group-item", "list-group-item-action", "col-md-4", "col-sm-4", "pokemon-item");
+    let listpokemon = document.createElement('li');
+    listpokemon.classList.add(
+      'list-group-item',
+      'list-group-item-action',
+      'col-md-4',
+      'col-sm-4',
+      'pokemon-item'
+    );
 
     let button = document.createElement('button');
-    button.classList.add("btn", "btn-success", "btn-block");
-    button.setAttribute("data-toggle", "modal");
-    button.setAttribute("data-target", "#modal");
+    button.classList.add('btn', 'btn-success', 'btn-block');
+    button.setAttribute('data-toggle', 'modal');
+    button.setAttribute('data-target', '#modal');
     button.innerText = pokemon.name;
     listpokemon.appendChild(button);
     listcontainer.appendChild(listpokemon);
@@ -38,22 +43,21 @@ let pokemonRepository = (function () {
 
   // Function showing loading message
   function showLoadingMessage() {
-    let loadingScreen = document.querySelector(".loading-screen");
-    let loader = document.querySelector("#loader");
-    loadingScreen.classList.add("display");
-    loader.classList.add("display");
+    let loadingScreen = document.querySelector('.loading-screen');
+    let loader = document.querySelector('#loader');
+    loadingScreen.classList.add('display');
+    loader.classList.add('display');
     setTimeout(() => {
-      loader.classList.remove("display");
+      loader.classList.remove('display');
     }, 5000000);
   }
 
-
   // Function hiding loading message
   function hideLoadingMessage() {
-    let loadingScreen = document.querySelector(".loading-screen");
-    let loader = document.querySelector("#loader");
-    loadingScreen.classList.remove("display");
-    loader.classList.remove("display")
+    let loadingScreen = document.querySelector('.loading-screen');
+    let loader = document.querySelector('#loader');
+    loadingScreen.classList.remove('display');
+    loader.classList.remove('display');
   }
 
   //  Function creating a modal
@@ -62,15 +66,15 @@ let pokemonRepository = (function () {
     let modalTitle = document.querySelector('.modal-title');
     modalBody.innerHTML = '';
 
-    modalTitle.innerText = "Name: " + name;
+    modalTitle.innerText = 'Name: ' + name;
 
     let heightElement = document.createElement('p');
-    heightElement.innerText = "Height: " + height + " m";
+    heightElement.innerText = 'Height: ' + height + ' m';
 
     let imgElement = document.createElement('img');
-    imgElement.setAttribute("src", imageUrl);
+    imgElement.setAttribute('src', imageUrl);
 
-    modalBody.classList.add("text-center");
+    modalBody.classList.add('text-center');
     modalBody.appendChild(heightElement);
     modalBody.appendChild(imgElement);
   }
@@ -84,22 +88,24 @@ let pokemonRepository = (function () {
 
   // Function adding click event to a button
   function addButtonListener(button, pokemon) {
-    button.addEventListener('click', function () { showDetails(pokemon) });
+    button.addEventListener('click', function () {
+      showDetails(pokemon);
+    });
   }
 
   function wait(ms, value) {
-    return new Promise(resolve => setTimeout(resolve, ms, value));
+    return new Promise((resolve) => setTimeout(resolve, ms, value));
   }
 
   // Function fetching all Pokemons
   function loadList() {
-    showLoadingMessage(); // Executing function showing loading msg 
+    showLoadingMessage(); // Executing function showing loading msg
     return fetch(apiUrl)
-      .then(value => wait(2000, value))
-      .then(response => {
+      .then((value) => wait(2000, value))
+      .then((response) => {
         return response.json();
       })
-      .then(json => {
+      .then((json) => {
         hideLoadingMessage(); // Executing function hiding loading msg because the response has been received
         json.results.forEach(function (item) {
           let pokemon = {
@@ -112,27 +118,29 @@ let pokemonRepository = (function () {
       .catch(function (e) {
         hideLoadingMessage(); // Executing function hiding loading msg because the response has been received
         console.error(e);
-      })
+      });
   }
 
   // Function fetching specific Pokemon's details
   function loadDetails(item) {
     let url = item.detailsUrl;
-    return fetch(url).then(function (response) {
-      return response.json();
-    }).then(function (details) {
-      // Now we add the details to the item
-      item.imageUrl = details.sprites.front_default;
-      item.height = details.height;
-      item.types = details.types;
-    }).catch(function (e) {
-      console.error(e);
-    });
+    return fetch(url)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (details) {
+        // Now we add the details to the item
+        item.imageUrl = details.sprites.front_default;
+        item.height = details.height;
+        item.types = details.types;
+      })
+      .catch(function (e) {
+        console.error(e);
+      });
   }
 
   // Function searching through list items
   function search() {
-
     let filter, li, i, txtValue, buttonPokemon;
     filter = input.value.toUpperCase();
     li = document.getElementsByClassName('list-group-item');
@@ -163,11 +171,9 @@ let pokemonRepository = (function () {
     hideLoadingMessage: hideLoadingMessage,
     search: search
   };
-
 })();
 
-
-// // Loading list of pokemons 
+// // Loading list of pokemons
 pokemonRepository.loadList().then(function () {
   // Now the data is loaded!
   pokemonRepository.getAll().forEach(function (pokemon) {
