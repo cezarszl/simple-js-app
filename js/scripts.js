@@ -81,8 +81,6 @@ let pokemonRepository = (function () {
 
     let imgElement = document.createElement('img');
     imgElement.setAttribute('src', imageUrl);
-    // imgElement.setAttribute('width', 200);
-    // imgElement.setAttribute('height', 200);
 
     modalHeader.appendChild(imgElement);
     modalHeader.appendChild(closeBtn);
@@ -92,7 +90,6 @@ let pokemonRepository = (function () {
 
     let weightElement = document.createElement('p');
     weightElement.innerHTML = 'Weight: ' + weight / 10 + ' kg';
-    // console.log(types);
     let typesElement = document.createElement('p');
     typesElement.innerText = 'Types: ' + types.join(', ');
 
