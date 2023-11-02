@@ -1,28 +1,92 @@
-/* body {
-    background-color: gray;
-} */
+@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
+
+body {
+    background: rgb(219, 219, 227);
+    background: linear-gradient(90deg, rgba(219, 219, 227, 1) 48%, rgba(81, 83, 83, 1) 100%);
+}
+
 .container {
     margin-top: 100px;
+    margin-bottom: 200px;
+}
+
+.container h1 {
+    margin-bottom: 50px;
 }
 
 .container li {
-    background:none;
+    background: none;
 }
 
+/* Modal */
+.modal-header .modal-title {
+    text-transform: capitalize;
+}
+
+.modal-header img {
+    width: 150px;
+    height: 150px;
+}
+
+.modal-header .close {
+    margin-left: 0;
+}
+
+.modal-body p {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Buttons */
+.button-89 {
+    --b: 3px;
+    --s: .45em;
+    --color: #373B44;
+    padding: calc(.5em + var(--s)) calc(.9em + var(--s));
+    color: var(--color);
+    --_p: var(--s);
+    background:
+        conic-gradient(from 90deg at var(--b) var(--b), #0000 90deg, var(--color) 0) var(--_p) var(--_p)/calc(100% - var(--b) - 2*var(--_p)) calc(100% - var(--b) - 2*var(--_p));
+    transition: .3s linear, color 0s, background-color 0s;
+    outline: var(--b) solid #0000;
+    outline-offset: .6em;
+    font-size: 16px;
+    font-weight: bold;
+    border: 0;
+    width: 100%;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.button-89:hover,
+.button-89:focus-visible {
+    --_p: 0px;
+    outline-color: var(--color);
+    outline-offset: .05em;
+}
+
+.button-89:active {
+    background: var(--color);
+    color: #fff;
+}
+
+/* Loader and loading screen */
 .loading-screen {
     display: none;
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.5);
-	z-index: 9998;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
 }
 
 .loading-screen.display {
-    display:block;
-	
+    display: block;
+
 }
 
 #loader {
@@ -40,16 +104,66 @@
     text-align: center;
     z-index: 9999;
 }
+
 #loader.display {
     visibility: visible;
 }
+
 @keyframes spin {
     from {
         transform: rotate(0deg);
     }
+
     to {
         transform: rotate(360deg);
     }
+}
+
+/* About */
+.about-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.about-container {
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(17, 25, 40, 0.25);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.125);
+    padding: 38px;
+    filter: drop-shadow(0 30px 10px rgba(0, 0, 0, 0.125));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 700px;
+}
+
+.about-wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+.about-body h1 {
+    font-family: 'Righteous', sans-serif;
+    color: rgba(221, 207, 207, 0.98);
+    text-transform: uppercase;
+    font-size: 3rem;
+    padding-bottom: 30px;
+}
+
+.about-body p {
+    color: #eee;
+    font-family: 'Lato', sans-serif;
+    text-align: justify;
+    font-size: 1.5rem;
+    font-weight: bold;
+    line-height: 150%;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
 .pokemon-item {
