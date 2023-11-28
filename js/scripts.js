@@ -260,7 +260,6 @@ const search = function search() {
       li[i].style.display = 'none';
     }
   }
-}
-
+};
 // Method adding an event when typing in search field
 input.addEventListener('keyup', debounce(search, 250));
