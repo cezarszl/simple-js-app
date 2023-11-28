@@ -217,7 +217,8 @@ const pokemonRepository = (function () {
   };
 })();
 
-import { pagination } from './pagination.js';
+// import { pagination } from './pagination.js';
+import { pagination } from './pagination.min.js';
 
 // // Loading list of pokemons
 pokemonRepository.loadList().then(function () {
