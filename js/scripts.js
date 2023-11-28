@@ -2,7 +2,6 @@
 const pokemonRepository = (function () {
   const pokemonList = [];
   const apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=3000';
-  const input = document.querySelector('#search');
 
   function add(pokemon) {
     // Checking if modification is an object and if the key is the same
@@ -170,39 +169,6 @@ const pokemonRepository = (function () {
       });
   }
 
-  //Debounce function
-  const debounce = (func, wait) => {
-    let timeout;
-
-    return function executedFunction(...args) {
-      const later = () => {
-        clearTimeout(timeout);
-        func(...args);
-      };
-
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-    };
-  };
-  // Function searching through list items
-  const search = function search() {
-    let filter, li, i, txtValue, buttonPokemon;
-    filter = input.value.toUpperCase();
-    li = document.getElementsByClassName('list-group-item');
-    for (i = 0; i < li.length; i++) {
-      buttonPokemon = li[i].getElementsByClassName('btn')[0];
-      txtValue = buttonPokemon.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        li[i].style.display = '';
-      } else {
-        li[i].style.display = 'none';
-      }
-    }
-  }
-
-  // Method adding an event when typing in search field
-  input.addEventListener('keyup', debounce(search, 250));
-
   return {
     add,
     getAll,
@@ -232,6 +198,7 @@ pokemonRepository.loadList().then(function () {
   console.error(err);
 });
 
+
 //Debounce function
 const debounce = (func, wait) => {
   let timeout;
@@ -247,6 +214,7 @@ const debounce = (func, wait) => {
   };
 };
 // Function searching through list items
+
 const search = function search() {
   let filter, li, i, txtValue, buttonPokemon;
   filter = input.value.toUpperCase();
@@ -256,10 +224,12 @@ const search = function search() {
     txtValue = buttonPokemon.innerText;
     if (txtValue.toUpperCase().indexOf(filter) > -1) {
       li[i].style.display = '';
+      // li[i].classList.remove('hidden');
     } else {
       li[i].style.display = 'none';
     }
   }
 };
 // Method adding an event when typing in search field
+const input = document.querySelector('#search');
 input.addEventListener('keyup', debounce(search, 250));
