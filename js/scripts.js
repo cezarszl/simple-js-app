@@ -170,8 +170,22 @@ const pokemonRepository = (function () {
       });
   }
 
+  //Debounce function
+  const debounce = (func, wait) => {
+    let timeout;
+
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  };
   // Function searching through list items
-  function search() {
+  const search = function search() {
     let filter, li, i, txtValue, buttonPokemon;
     filter = input.value.toUpperCase();
     li = document.getElementsByClassName('list-group-item');
@@ -187,20 +201,19 @@ const pokemonRepository = (function () {
   }
 
   // Method adding an event when typing in search field
-  input.addEventListener('keyup', search);
+  input.addEventListener('keyup', debounce(search, 250));
 
   return {
-    add: add,
-    getAll: getAll,
-    addListItem: addListItem,
-    showDetails: showDetails,
-    showModal: showModal,
-    addButtonListener: addButtonListener,
-    loadList: loadList,
-    loadDetails: loadDetails,
-    showLoadingMessage: showLoadingMessage,
-    hideLoadingMessage: hideLoadingMessage,
-    search: search
+    add,
+    getAll,
+    addListItem,
+    showDetails,
+    showModal,
+    addButtonListener,
+    loadList,
+    loadDetails,
+    showLoadingMessage,
+    hideLoadingMessage
   };
 })();
 
@@ -217,3 +230,36 @@ pokemonRepository.loadList().then(function () {
 }).catch((err) => {
   console.error(err);
 });
+
+//Debounce function
+const debounce = (func, wait) => {
+  let timeout;
+
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+};
+// Function searching through list items
+const search = function search() {
+  let filter, li, i, txtValue, buttonPokemon;
+  filter = input.value.toUpperCase();
+  li = document.getElementsByClassName('list-group-item');
+  for (i = 0; i < li.length; i++) {
+    buttonPokemon = li[i].getElementsByClassName('btn')[0];
+    txtValue = buttonPokemon.innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      li[i].style.display = '';
+    } else {
+      li[i].style.display = 'none';
+    }
+  }
+}
+
+// Method adding an event when typing in search field
+input.addEventListener('keyup', debounce(search, 250));

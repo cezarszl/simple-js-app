@@ -11,9 +11,9 @@ Download the repo files and open index.html. Alternatively go to https://cezarsz
 
 ## Project depedencies
 
-jQuery 3.5.1
-Bootstrap 4.5.0
-MDB 6.4.2
+* jQuery 3.5.1
+* Bootstrap 4.5.0
+* MDB 6.4.2
 
 ## API used
 
