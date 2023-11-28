@@ -1,8 +1,8 @@
 // Declaring a IIFE
-let pokemonRepository = (function () {
-  let pokemonList = [];
-  let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=1000';
-  let input = document.querySelector('#search');
+const pokemonRepository = (function () {
+  const pokemonList = [];
+  const apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=3000';
+  const input = document.querySelector('#search');
 
   function add(pokemon) {
     // Checking if modification is an object and if the key is the same
@@ -20,9 +20,9 @@ let pokemonRepository = (function () {
 
   // Function adding Pokemons to the list
   function addListItem(pokemon) {
-    let listcontainer = document.querySelector('.row');
+    const listcontainer = document.querySelector('.row');
 
-    let listpokemon = document.createElement('li');
+    const listpokemon = document.createElement('li');
     listpokemon.classList.add(
       'list-group-item',
       // 'list-group-item-action',
@@ -32,7 +32,7 @@ let pokemonRepository = (function () {
       'pokemon-item'
     );
 
-    let button = document.createElement('button');
+    const button = document.createElement('button');
     button.classList.add('btn', 'button-89');
     button.setAttribute('data-toggle', 'modal');
     button.setAttribute('data-target', '#modal');
@@ -44,8 +44,8 @@ let pokemonRepository = (function () {
 
   // Function showing loading message
   function showLoadingMessage() {
-    let loadingScreen = document.querySelector('.loading-screen');
-    let loader = document.querySelector('#loader');
+    const loadingScreen = document.querySelector('.loading-screen');
+    const loader = document.querySelector('#loader');
     loadingScreen.classList.add('display');
     loader.classList.add('display');
     setTimeout(() => {
@@ -55,45 +55,45 @@ let pokemonRepository = (function () {
 
   // Function hiding loading message
   function hideLoadingMessage() {
-    let loadingScreen = document.querySelector('.loading-screen');
-    let loader = document.querySelector('#loader');
+    const loadingScreen = document.querySelector('.loading-screen');
+    const loader = document.querySelector('#loader');
     loadingScreen.classList.remove('display');
     loader.classList.remove('display');
   }
 
   //  Function creating a modal
   function showModal(name, height, weight, imageUrl, types) {
-    let modalBody = document.querySelector('.modal-body');
-    let modalTitle = document.querySelector('.modal-title');
-    let modalHeader = document.querySelector('.modal-header');
+    const modalBody = document.querySelector('.modal-body');
+    const modalTitle = document.querySelector('.modal-title');
+    const modalHeader = document.querySelector('.modal-header');
     modalHeader.innerHTML = '';
     modalBody.innerHTML = '';
     modalHeader.appendChild(modalTitle);
 
     modalTitle.innerText = name;
 
-    let closeBtn = document.createElement('button');
+    const closeBtn = document.createElement('button');
     closeBtn.classList.add('close');
     closeBtn.setAttribute('type', 'button');
     closeBtn.setAttribute('data-dismiss', 'modal');
     closeBtn.setAttribute('aria-label', 'Close');
     closeBtn.innerHTML = '<span aria-hidden="true">&times;</span>';
 
-    let imgElement = document.createElement('img');
+    const imgElement = document.createElement('img');
     imgElement.setAttribute('src', imageUrl);
 
-    modalHeader.appendChild(imgElement);
     modalHeader.appendChild(closeBtn);
 
-    let heightElement = document.createElement('p');
+    const heightElement = document.createElement('p');
     heightElement.innerText = 'Height: ' + height / 10 + ' m';
 
-    let weightElement = document.createElement('p');
+    const weightElement = document.createElement('p');
     weightElement.innerHTML = 'Weight: ' + weight / 10 + ' kg';
-    let typesElement = document.createElement('p');
+    const typesElement = document.createElement('p');
     typesElement.innerText = 'Types: ' + types.join(', ');
 
     modalBody.classList.add('text-center');
+    modalBody.appendChild(imgElement);
     modalBody.appendChild(heightElement);
     modalBody.appendChild(weightElement);
     modalBody.appendChild(typesElement);
@@ -134,7 +134,7 @@ let pokemonRepository = (function () {
       .then((json) => {
         hideLoadingMessage(); // Executing function hiding loading msg because the response has been received
         json.results.forEach(function (item) {
-          let pokemon = {
+          const pokemon = {
             name: item.name,
             detailsUrl: item.url
           };
@@ -149,7 +149,7 @@ let pokemonRepository = (function () {
 
   // Function fetching specific Pokemon's details
   function loadDetails(item) {
-    let url = item.detailsUrl;
+    const url = item.detailsUrl;
     return fetch(url)
       .then(function (response) {
         return response.json();
@@ -204,10 +204,16 @@ let pokemonRepository = (function () {
   };
 })();
 
+import { pagination } from './pagination.js';
+
 // // Loading list of pokemons
 pokemonRepository.loadList().then(function () {
   // Now the data is loaded!
   pokemonRepository.getAll().forEach(function (pokemon) {
     pokemonRepository.addListItem(pokemon);
   });
+}).then(() => {
+  pagination();
+}).catch((err) => {
+  console.error(err);
 });
